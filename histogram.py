@@ -1,22 +1,26 @@
 import operator 
 
-def main():
-    dictionarySmall = {}
-    dictionaryBig = {}
+dictionarySmall = {}
+dictionaryBig = {}
 
-    def top(tally):
-        sorted_tally = sorted(tally.items(), key=operator.itemgetter(1))
-        if (len(sorted_tally) >= 3):
-            toReturn = ""
-            for x in range(0, 2):
-                toReturn += sorted_tally[x]
-        else:
-            print sorted_tally
+def main():
+
+    def top(data):
+        length = len(data)
+        tupleVersion = sorted(data.items(), key=lambda x:x[1])
+        listVersion = list(tupleVersion)
+        if length > 3:
+            for x in range (0, length-3):
+                listVersion.pop(x)
+        print listVersion
 
     def letterSummary(word):
         global dictionarySmall
+        word = word.lower()
+        wordList = list(word)
+        # print wordList
         dictionary = {}
-        for x in word:
+        for x in wordList:
             if (x not in dictionary.keys()):
                 dictionary[x] = 1
             elif (x in dictionary.keys()):
