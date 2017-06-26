@@ -1,9 +1,15 @@
 import numpy
+import os
+import matplotlib.pyplot as plt; plt.rcdefaults()
+import numpy as np
+import matplotlib.pyplot as plt
 
 # data
 restaurant = ["Chipotle", "Farm Burger", "Naan Stop"]
-visited    = [0, 0, 0]
+visited    = [0,0,0]
 weekDay    = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+weekCount  = 1
+restaurantLength = len(restaurant)
 print restaurant
 
 def main():
@@ -18,10 +24,10 @@ def main():
     def interpolate(num):
         if (num == 0):
             quit()
-        elif (num > 0 and num < len(restaurant)+1 and visited[num-1] < 3):
-            print "You chose %s" % restaurant[num-1]
+        elif (num > 0 and num < len(restaurant)+1 and visited[num-1] < 3 * weekCount):
+            print "You chose %s on %s" % (restaurant[num-1], weekDay[(num-1) - (weekCount - 1) * 5])
             visited[num-1] += 1
-        elif (num > 0 and num < len(restaurant)+1 and visited[num-1] >= 3):
+        elif (num > 0 and num < len(restaurant)+1 and visited[num-1] >= 3 * weekCount):
             print "You've visited this restaurant 3 times already! Please pick a new one"
             pick()
         else:
@@ -63,21 +69,65 @@ def main():
         inds = visited.argsort()
         sortedRestaurant = restaurant[inds] 
         print sortedRestaurant
+        print "%s is the least visited" % sortedRestaurant[0]
+        print "%s is the most visited" % sortedRestaurant[len(sortedRestaurant)-1]
 
-    count = 0
-    while count < 5:
-        print "It is %s" % weekDay[count]
-        pick()
-        count = count + 1
-    
+    def listRestaurants():
+        count = 0
+        while count < 5:
+            print "It is %s" % weekDay[count]
+            pick()
+            count = count + 1
+        
     def printVisited():
         for x in range(len(restaurant)):
             print "%s has been visited %s times" % (restaurant[x], visited[x])
+
+    def plot():
+        global restaurant
+        global restaurantLength
+        global visited
+        objects = []
+        performance = []
+
+        for x in restaurant:
+            objects.append(x)
+        for x in visited:
+            performance.append(x)  
+
+        y_pos = np.arange(len(objects))
+        plt.barh(y_pos, performance, align='center', alpha=0.5)
+        plt.yticks(y_pos, objects)
+        plt.xlabel('Usage')
+        plt.title('Programming language usage')
+        plt.show()
     
-    printVisited()
-    addRestaurant()
-    removeRestaurant()
-    printVisited()
-    sortByVisited()
+    def intro():
+        global weekCount
+        doList = raw_input("Do you want to list the restaurants? (y/n)")
+        if (doList == 'y'):
+            listRestaurants()
+            weekCount += 1
+            printVisited()
+            doListAgain = raw_input("Do you want to list another week? (y/n) ")
+            if (doListAgain == 'y'):
+                listRestaurants()
+                weekCount += 1
+                printVisited()
+        
+        doManage = raw_input("Do you want to manage the list? (y/n)? ")
+        os.system('clear')
+        if (doManage == 'y'):
+            addRestaurant()
+            removeRestaurant()
+            printVisited()
+    
+        doSort = raw_input("Do you want to sort the list by least to most visited? (y/n) ")
+        os.system('clear')
+        if (doSort == 'y'):
+            sortByVisited()
+    intro()
+    plot()
+    quit()
 
 main()
