@@ -6,7 +6,12 @@ def main():
 
     def top(tally):
         sorted_tally = sorted(tally.items(), key=operator.itemgetter(1))
-        print sorted_tally
+        if (len(sorted_tally) >= 3):
+            toReturn = ""
+            for x in range(0, 2):
+                toReturn += sorted_tally[x]
+        else:
+            print sorted_tally
 
     def letterSummary(word):
         global dictionarySmall
@@ -17,7 +22,7 @@ def main():
             elif (x in dictionary.keys()):
                 dictionary[x] += 1
         dictionarySmall = dictionary
-        print dictionary    
+        print "Top = %s" % dictionary    
 
     letterSummary(raw_input("Desired word to count? "))
     top(dictionarySmall)
