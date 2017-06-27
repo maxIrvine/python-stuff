@@ -5,7 +5,7 @@ from pygame.locals import *
 pygame.init()
 
 # set up window
-windowSurface = pygame.display.set_mode((500, 400))
+windowSurface = pygame.display.set_mode((800, 800))
 pygame.display.set_caption('Hello world!') 
 
  # set up the colors
@@ -19,16 +19,21 @@ windowSurface.fill(white)
 # shapes and stuff!
 
 #main game loop
-while True:
+count = 0
+while count < 600:
         for event in pygame.event.get():
             if event.type == QUIT:
                     pygame.quit()
                     sys.exit()
-    pygame.draw.circle(windowSurface, green, (300, 50+count), 20, 0)
-    time.sleep(1)
-    count = count + 1
+        pygame.draw.circle(windowSurface, green, (250, 50+count), 20, 0)
+        pygame.draw.circle(windowSurface, blue, (50+count, 250), 20, 0)
+        pygame.draw.circle(windowSurface, red, (50+count, 500), 20, 0)
+        pygame.draw.circle(windowSurface, black, (500, 50+count), 20, 0)
+        time.sleep(.01)
+        count = count + 1
         
         pygame.display.update()
+
 
 # # set up fonts
 # basicFont = pygame.font.SysFont(None, 48)
